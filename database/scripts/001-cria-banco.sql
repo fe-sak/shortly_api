@@ -14,6 +14,6 @@ CREATE TABLE sessions (
 CREATE TABLE urls (
   id SERIAL PRIMARY KEY,
   "userId" INTEGER NOT NULL REFERENCES users(id),
-  "longUrl" TEXT NOT NULL,
+  "url" TEXT NOT NULL,
   "shortUrl" TEXT NOT NULL UNIQUE
 );
