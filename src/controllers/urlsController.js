@@ -27,7 +27,7 @@ export async function shortenUrl(req, res) {
       ($1, $2, $3);`,
       [userId, longUrl, shortUrl]
     );
-    res.sendStatus(200);
+    res.status(201).send({ shortUrl });
   } catch (error) {
     console.log(error);
     return res.sendStatus(500);
