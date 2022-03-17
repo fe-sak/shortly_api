@@ -12,9 +12,14 @@ export async function listUrls(req, res) {
       return res.sendStatus(404);
     }
 
+    await connection.query(`UPDATE urls SET views=views+1 WHERE id=$1`, [
+      urlId,
+    ]);
+
     delete url.userId;
     return res.status(200).send(url);
   } catch (error) {
+    console.log(error);
     return res.sendStatus(500);
   }
 }
