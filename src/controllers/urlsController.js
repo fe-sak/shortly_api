@@ -51,3 +51,21 @@ export async function shortenUrl(req, res) {
     return res.sendStatus(500);
   }
 }
+
+export async function deleteUrl(req, res) {
+  const { id: userId } = res.locals.user;
+  const { id: urlId } = req.params;
+  try {
+    const { rowCount } = await connection.query(
+      `DELETE FROM urls WHERE id=$1 AND "userId"=$2`,
+      [urlId, userId]
+    );
+
+    if (rowCount === 0) return res.sendStatus(401);
+
+    return res.sendStatus(204);
+  } catch (error) {
+    console.log(error);
+    return res.sendStatus(500);
+  }
+}
