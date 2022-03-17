@@ -4,7 +4,16 @@ import { connection } from '../database.js';
 export async function listUrls(req, res) {
   const { id: urlId } = req.params;
   try {
-    res.sendStatus(200);
+    const {
+      rows: [url],
+    } = await connection.query(`SELECT * FROM urls WHERE id=$1`, [urlId]);
+
+    if (!url) {
+      return res.sendStatus(404);
+    }
+
+    delete url.userId;
+    return res.status(200).send(url);
   } catch (error) {
     return res.sendStatus(500);
   }
@@ -26,7 +35,7 @@ export async function shortenUrl(req, res) {
         .status(409)
         .send(`Url já cadastrada! shortUrl: ${urlExists.shortUrl}`);
 
-    const shortUrl = uuid().slice(0, 6);
+    const shortUrl = uuid().slice(0, 8);
 
     await connection.query(
       `
